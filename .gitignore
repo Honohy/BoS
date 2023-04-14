@@ -2,8 +2,14 @@ Binaries
 DerivedDataCache
 Intermediate
 Saved
+Build
+Android_ASTC
+Windows
+WindowsServer
+Android*
 .vscode
 .vs
+.idea
 *.VC.db
 *.opensdf
 *.opendb
@@ -12,3 +18,4 @@ Saved
 *.suo
 *.xcodeproj
 *.xcworkspace
+*.zip
