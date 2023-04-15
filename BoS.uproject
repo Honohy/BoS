@@ -3,6 +3,16 @@
 	"EngineAssociation": "{636310D2-4FC9-E718-74AC-DBB585E0B609}",
 	"Category": "",
 	"Description": "",
+	"Modules": [
+		{
+			"Name": "BoS",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	],
 	"Plugins": [
 		{
 			"Name": "ModelingToolsEditorMode",
