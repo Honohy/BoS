@@ -13,12 +13,20 @@ void UBosAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBosAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBosAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBosAttributeSet, Damage, COND_None, REPNOTIFY_Always);
 }
 
 void UBosAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBosAttributeSet,Health, OldHealth);
 }
 
 void UBosAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
 {
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBosAttributeSet,MaxHealth, OldMaxHealth);
+}
+
+void UBosAttributeSet::OnRep_Damage(const FGameplayAttributeData& OldDamage)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBosAttributeSet,Damage, OldDamage);
 }
