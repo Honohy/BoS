@@ -6,16 +6,15 @@
 
 
 // Sets default values
-ABosCharacter::ABosCharacter()
+ABosCharacter::ABosCharacter(const FObjectInitializer& ObjectInitializer)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(FName("AbilitySystemComponent"));
 }
 
 UAbilitySystemComponent* ABosCharacter::GetAbilitySystemComponent() const
 {
-	return AbilitySystemComponent;
+	return nullptr;
 }
 
 // Called when the game starts or when spawned
