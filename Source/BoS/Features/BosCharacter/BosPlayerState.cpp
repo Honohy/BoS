@@ -14,7 +14,7 @@ ABosPlayerState::ABosPlayerState()
 	BosAsc->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 	BosAttributeSet = CreateDefaultSubobject<UBosAttributeSet>(TEXT("AttributeSet"));
 	NetUpdateFrequency = 100.0f;
-	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Death"));
+	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
 }
 
 UAbilitySystemComponent* ABosPlayerState::GetAbilitySystemComponent() const
@@ -59,23 +59,37 @@ void ABosPlayerState::BeginPlay()
 		HealthChangedDelegateHandle = BosAsc->GetGameplayAttributeValueChangeDelegate(BosAttributeSet->GetHealthAttribute()).AddUObject(this,&ABosPlayerState::HealthChanged);
 		MaxHealthChangedDelegateHandle = BosAsc->GetGameplayAttributeValueChangeDelegate(BosAttributeSet->GetMaxHealthAttribute()).AddUObject(this,&ABosPlayerState::MaxHealthChanged);
 		LevelChangedDelegateHandle = BosAsc->GetGameplayAttributeValueChangeDelegate(BosAttributeSet->GetLevelAttribute()).AddUObject(this,&ABosPlayerState::LevelChanged);
-		BosAsc->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName("State.DebuffStun")),EGameplayTagEventType::NewOrRemoved).AddUObject(this,&ABosPlayerState::StunTagChanged);
+		BosAsc->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName("State.Debuff.Stun")),EGameplayTagEventType::NewOrRemoved).AddUObject(this,&ABosPlayerState::StunTagChanged);
 	}
 }
 
 void ABosPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 {
+	UE_LOG(LogTemp,Warning,TEXT("Health changed"));
 }
 
 void ABosPlayerState::MaxHealthChanged(const FOnAttributeChangeData& Data)
 {
+	UE_LOG(LogTemp,Warning,TEXT("MaxHealth changed"));
 }
 
 void ABosPlayerState::LevelChanged(const FOnAttributeChangeData& Data)
 {
+	UE_LOG(LogTemp,Warning,TEXT("Level changed"));
 }
 
 void ABosPlayerState::StunTagChanged(const FGameplayTag CallBackTag, int32 NewCount)
 {
+	if (NewCount > 0)
+	{
+		FGameplayTagContainer AbilityTagsToCancel;
+		AbilityTagsToCancel.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability")));
+
+		FGameplayTagContainer AbilityTagsToIgnore;
+		AbilityTagsToIgnore.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.NotCanceledByStun")));
+
+		BosAsc->CancelAbilities(&AbilityTagsToCancel, &AbilityTagsToIgnore);
+	}
+
 }
 
