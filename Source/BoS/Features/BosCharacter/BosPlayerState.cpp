@@ -19,17 +19,17 @@ ABosPlayerState::ABosPlayerState()
 
 UAbilitySystemComponent* ABosPlayerState::GetAbilitySystemComponent() const
 {
-	return nullptr;
+	return BosAsc;
 }
 
 UBosAttributeSet* ABosPlayerState::GetAttributeSetBase() const
 {
-	return nullptr;
+	return BosAttributeSet;
 }
 
 bool ABosPlayerState::IsAlive() const
 {
-	return true;
+	return GetHealth() > 0.0f;
 }
 
 void ABosPlayerState::ShowAbilityConfirmCancelText(bool ShowText)
@@ -38,28 +38,40 @@ void ABosPlayerState::ShowAbilityConfirmCancelText(bool ShowText)
 
 float ABosPlayerState::GetHealth() const
 {
-	return 0.0f;
+	return BosAttributeSet->GetHealth();
 }
 
 float ABosPlayerState::GetMaxHealth() const
 {
-	return 0.0f;
+	return BosAttributeSet->GetMaxHealth();
 }
 
 float ABosPlayerState::GetCharacterLevel() const
 {
-	return 0.0f;
+	return BosAttributeSet->GetLevel();
 }
 
-void ABosPlayerState::HealthChanged(const FOnAttributeChangeData)
+void ABosPlayerState::BeginPlay()
+{
+	Super::BeginPlay();
+	if (BosAsc)
+	{
+		HealthChangedDelegateHandle = BosAsc->GetGameplayAttributeValueChangeDelegate(BosAttributeSet->GetHealthAttribute()).AddUObject(this,&ABosPlayerState::HealthChanged);
+		MaxHealthChangedDelegateHandle = BosAsc->GetGameplayAttributeValueChangeDelegate(BosAttributeSet->GetMaxHealthAttribute()).AddUObject(this,&ABosPlayerState::MaxHealthChanged);
+		LevelChangedDelegateHandle = BosAsc->GetGameplayAttributeValueChangeDelegate(BosAttributeSet->GetLevelAttribute()).AddUObject(this,&ABosPlayerState::LevelChanged);
+		BosAsc->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName("State.DebuffStun")),EGameplayTagEventType::NewOrRemoved).AddUObject(this,&ABosPlayerState::StunTagChanged);
+	}
+}
+
+void ABosPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 {
 }
 
-void ABosPlayerState::MaxHealthChanged(const FOnAttributeChangeData)
+void ABosPlayerState::MaxHealthChanged(const FOnAttributeChangeData& Data)
 {
 }
 
-void ABosPlayerState::LevelChanged(const FOnAttributeChangeData)
+void ABosPlayerState::LevelChanged(const FOnAttributeChangeData& Data)
 {
 }
 

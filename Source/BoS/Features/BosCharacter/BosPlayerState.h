@@ -48,9 +48,11 @@ protected:
 	FDelegateHandle MaxHealthChangedDelegateHandle;
 	FDelegateHandle LevelChangedDelegateHandle;
 
-	virtual void HealthChanged(const FOnAttributeChangeData);
-	virtual void MaxHealthChanged(const FOnAttributeChangeData);
-	virtual void LevelChanged(const FOnAttributeChangeData);
+	virtual void BeginPlay() override;
+	
+	virtual void HealthChanged(const FOnAttributeChangeData& Data);
+	virtual void MaxHealthChanged(const FOnAttributeChangeData& Data);
+	virtual void LevelChanged(const FOnAttributeChangeData& Data);
 
 	virtual void StunTagChanged(const FGameplayTag CallBackTag, int32 NewCount);
 };
