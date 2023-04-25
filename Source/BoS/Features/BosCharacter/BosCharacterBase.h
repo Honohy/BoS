@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "BoS/Common/BosEnum.h"
-#include "BosCharacter.generated.h"
+#include "BosCharacterBase.generated.h"
 
 class UGameplayEffect;
 struct FGameplayTag;
@@ -15,15 +15,15 @@ class UBosAttributeSet;
 class UBosAsc;
 class UBosGameplayAbility;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterDead, ABosCharacter*, DiedCharacter);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterDead, ABosCharacterBase*, DiedCharacter);
 UCLASS()
-class BOS_API ABosCharacter : public ACharacter, public IAbilitySystemInterface
+class BOS_API ABosCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	ABosCharacter(const class FObjectInitializer& ObjectInitializer);
+
+	ABosCharacterBase(const class FObjectInitializer& ObjectInitializer);
 	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	// Called every frame
@@ -33,7 +33,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="BoS|Charcter")
 	FCharacterDead OnCharacterDied;
 
-	// methods
+	// Methods
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter")
 	virtual bool IsAlive() const;
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter")

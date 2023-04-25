@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BosCharacter.h"
+#include "BosCharacterBase.h"
 #include "Bos/Gas/Attributes/BosAttributeSet.h"
 #include "BoS/Gas/BosAsc.h"
 #include "BoS/Gas/Abilitiees/BosGameplayAbility.h"
@@ -10,7 +10,7 @@
 
 
 // Sets default values
-ABosCharacter::ABosCharacter(const FObjectInitializer& ObjectInitializer)
+ABosCharacterBase::ABosCharacterBase(const FObjectInitializer& ObjectInitializer)
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -24,20 +24,20 @@ ABosCharacter::ABosCharacter(const FObjectInitializer& ObjectInitializer)
 	
 }
 
-UAbilitySystemComponent* ABosCharacter::GetAbilitySystemComponent() const
+UAbilitySystemComponent* ABosCharacterBase::GetAbilitySystemComponent() const
 {
 	//return BosAsc.Get();
 	return nullptr;
 }
 
 // Called when the game starts or when spawned
-void ABosCharacter::BeginPlay()
+void ABosCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-void ABosCharacter::AddCharacterAbilities()
+void ABosCharacterBase::AddCharacterAbilities()
 {
 	if (GetRemoteRole() != EGameplayAbilityActivationMode::Authority || !BosAsc.IsValid() ||
 		!BosAsc->GasAbilityGiven)
@@ -51,7 +51,7 @@ void ABosCharacter::AddCharacterAbilities()
 }
 
 
-void ABosCharacter::InitializeAttributes()
+void ABosCharacterBase::InitializeAttributes()
 {
 	if (!BosAsc.IsValid())
 		return;
@@ -68,7 +68,7 @@ void ABosCharacter::InitializeAttributes()
 		BosAsc->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), BosAsc.Get());
 }
 
-void ABosCharacter::AddStartEffects()
+void ABosCharacterBase::AddStartEffects()
 {
 	if (GetLocalRole() != ROLE_Authority || !BosAsc.IsValid() || BosAsc->StartEffectApplied)
 		return;
@@ -85,29 +85,29 @@ void ABosCharacter::AddStartEffects()
 	BosAsc->StartEffectApplied = true;
 }
 
-void ABosCharacter::SetHealth(float Health)
+void ABosCharacterBase::SetHealth(float Health)
 {
 	if (BosAttributeSet.IsValid())
 		BosAttributeSet->SetHealth(Health);
 }
 
 // Called every frame
-void ABosCharacter::Tick(float DeltaTime)
+void ABosCharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-bool ABosCharacter::IsAlive() const
+bool ABosCharacterBase::IsAlive() const
 {
 	return true;
 }
 
-int32 ABosCharacter::GetAbilityLevel(EBosAbilities AbilityId) const
+int32 ABosCharacterBase::GetAbilityLevel(EBosAbilities AbilityId) const
 {
 	return 1;
 }
 
-void ABosCharacter::RemoveCharacterAbilities()
+void ABosCharacterBase::RemoveCharacterAbilities()
 {
 	if (GetRemoteRole() != EGameplayAbilityActivationMode::Authority || !BosAsc.IsValid() || !BosAsc->GasAbilityGiven)
 	{
@@ -129,7 +129,7 @@ void ABosCharacter::RemoveCharacterAbilities()
 	BosAsc->GasAbilityGiven = false;
 }
 
-void ABosCharacter::Die()
+void ABosCharacterBase::Die()
 {
 	RemoveCharacterAbilities();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -147,26 +147,26 @@ void ABosCharacter::Die()
 	OnCharacterDied.Broadcast(this);
 }
 
-void ABosCharacter::FinishDying()
+void ABosCharacterBase::FinishDying()
 {
 	Destroy();
 }
 
-int32 ABosCharacter::GetCharacterLevel()
+int32 ABosCharacterBase::GetCharacterLevel()
 {
 	if (!BosAttributeSet.IsValid())
 		return -1;
 	return BosAttributeSet->GetLevel();
 }
 
-float ABosCharacter::GetHealth() const
+float ABosCharacterBase::GetHealth() const
 {
 	if (!BosAttributeSet.IsValid())
 		return 0.0f;
 	return BosAttributeSet->GetHealth();
 }
 
-float ABosCharacter::GetMaxHealth() const
+float ABosCharacterBase::GetMaxHealth() const
 {
 	if (BosAttributeSet.IsValid())
 	return BosAttributeSet->GetMaxHealth();
