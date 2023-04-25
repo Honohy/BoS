@@ -48,12 +48,41 @@ void ABosCharacter::AddCharacterAbilities()
 	BosAsc->GasAbilityGiven = true;
 }
 
+
 void ABosCharacter::InitializeAttributes()
 {
+	if (!BosAsc.IsValid())
+		return;
+	if (!DefaultAttributes)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultAttributes for %s. Please fill in the character's Blueprint."), *FString(__FUNCTION__), *GetName());
+		return;
+	}
+
+	FGameplayEffectContextHandle EffectContext;
+	EffectContext.AddSourceObject(this);
+	FGameplayEffectSpecHandle NewHandle = BosAsc->MakeOutgoingSpec(DefaultAttributes, GetCharacterLevel(), EffectContext);
+	if (NewHandle.IsValid())
+		BosAsc->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), BosAsc.Get());
+	
+		
 }
 
 void ABosCharacter::AddStartEffects()
 {
+	if (GetLocalRole() != ROLE_Authority || !BosAsc.IsValid() || BosAsc->StartEffectApplied)
+		return;
+	FGameplayEffectContextHandle EffectContext = BosAsc->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	for (TSubclassOf<UGameplayEffect> CurrentEffect : StartEffects)
+	{
+		FGameplayEffectSpecHandle NewSpecHandle = BosAsc->MakeOutgoingSpec(CurrentEffect,GetCharacterLevel(),EffectContext);
+		if (NewSpecHandle.IsValid())
+			BosAsc->ApplyGameplayEffectSpecToTarget(*NewSpecHandle.Data.Get(),BosAsc.Get());
+	}
+
+	BosAsc->StartEffectApplied = true;
 }
 
 void ABosCharacter::SetHealth(float Health)
@@ -121,11 +150,18 @@ void ABosCharacter::FinishDying()
 	Destroy();
 }
 
+int32 ABosCharacter::GetCharacterLevel()
+{
+	if (!BosAttributeSet.IsValid())
+		return -1;
+	return BosAttributeSet->GetLevel();
+}
+
 float ABosCharacter::GetHealth() const
 {
-	if (BosAttributeSet.IsValid())
+	if (!BosAttributeSet.IsValid())
+		return 0.0f;
 	return BosAttributeSet->GetHealth();
-	return 0.0f;
 }
 
 float ABosCharacter::GetMaxHealth() const

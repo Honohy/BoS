@@ -19,7 +19,7 @@ class BOS_API UBosAsc : public UAbilitySystemComponent
 
 public:
 	bool GasAbilityGiven = false;
-	bool EffectApplied = false;
+	bool StartEffectApplied = false;
 
 	FReceivedDamage OnDamageReceived;
 

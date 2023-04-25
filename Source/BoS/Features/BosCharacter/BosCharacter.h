@@ -43,6 +43,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter")
 	virtual void FinishDying();
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes")
+	int32 GetCharacterLevel();
+	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes")
 	float GetHealth() const;
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes")
 	float GetMaxHealth() const;
@@ -64,7 +66,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Bos|Abilities")
 	TSubclassOf<UGameplayEffect> DefaultAttributes;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Bos|Abilities")
-	TSubclassOf<UGameplayEffect> StartEffects;
+	TArray<TSubclassOf<UGameplayEffect>> StartEffects;
 
 	TWeakObjectPtr<UBosAsc> BosAsc;
 	TWeakObjectPtr<UBosAttributeSet> BosAttributeSet;

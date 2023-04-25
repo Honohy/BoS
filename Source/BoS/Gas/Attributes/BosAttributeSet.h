@@ -25,6 +25,13 @@ class BOS_API UBosAttributeSet : public UAttributeSet
 public:
 	UBosAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	// Level
+	UPROPERTY(BlueprintReadOnly, Category="Level",ReplicatedUsing= OnRep_Level)
+	FGameplayAttributeData Level;
+	UFUNCTION()
+	virtual void OnRep_Level(const FGameplayAttributeData& OldLevel);
+	ATTRIBUTE_ACCESSORS(UBosAttributeSet,Level);
 	
 	// Health
 	UPROPERTY(BlueprintReadOnly, Category="Health",ReplicatedUsing= OnRep_Health)
@@ -35,7 +42,7 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, Category="MaxHealth",ReplicatedUsing= OnRep_MaxHealth)
 	FGameplayAttributeData MaxHealth;
-	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(UBosAttributeSet, MaxHealth) FORCEINLINE float GetMaxHealth() const { return MaxHealth.GetCurrentValue(); } GAMEPLAYATTRIBUTE_VALUE_SETTER(MaxHealth) GAMEPLAYATTRIBUTE_VALUE_INITTER(MaxHealth);
+	ATTRIBUTE_ACCESSORS(UBosAttributeSet,MaxHealth);
 	UFUNCTION()
 	virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
 	
