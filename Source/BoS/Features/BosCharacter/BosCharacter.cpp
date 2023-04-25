@@ -17,9 +17,11 @@ ABosCharacter::ABosCharacter(const FObjectInitializer& ObjectInitializer)
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Overlap);
 	bAlwaysRelevant = true;
+	
 	// Gas tags
 	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
 	EffectRemoveOnDeathTag = FGameplayTag::RequestGameplayTag(FName("State.RemoveOnDeath"));
+	
 }
 
 UAbilitySystemComponent* ABosCharacter::GetAbilitySystemComponent() const
