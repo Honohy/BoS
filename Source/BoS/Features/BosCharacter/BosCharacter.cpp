@@ -6,6 +6,7 @@
 #include "BoS/Gas/BosAsc.h"
 #include "BoS/Gas/Abilitiees/BosGameplayAbility.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 // Sets default values
@@ -36,6 +37,15 @@ void ABosCharacter::BeginPlay()
 
 void ABosCharacter::AddCharacterAbilities()
 {
+	if (GetRemoteRole() != EGameplayAbilityActivationMode::Authority || !BosAsc.IsValid() ||
+		!BosAsc->GasAbilityGiven)
+		return;
+	for (TSubclassOf<UBosGameplayAbility>& CurrentAbility : Abilities)
+	{
+		BosAsc->GiveAbility(FGameplayAbilitySpec(CurrentAbility, GetAbilityLevel(CurrentAbility.GetDefaultObject()->AbilityInputID),
+			static_cast<int32>(CurrentAbility.GetDefaultObject()->AbilityInputID)));
+	}
+	BosAsc->GasAbilityGiven = true;
 }
 
 void ABosCharacter::InitializeAttributes()
@@ -90,6 +100,20 @@ void ABosCharacter::RemoveCharacterAbilities()
 
 void ABosCharacter::Die()
 {
+	RemoveCharacterAbilities();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->GravityScale = 0;
+	GetCharacterMovement()->Velocity = FVector::ZeroVector;
+	if (BosAsc.IsValid())
+	{
+		GetAbilitySystemComponent()->CancelAbilities();
+		FGameplayTagContainer EffectTagToRemove;
+		EffectTagToRemove.AddTag(EffectRemoveOnDeathTag);
+		int32 NumOfEffectremoving = BosAsc->RemoveActiveEffectsWithTags(EffectTagToRemove);
+		BosAsc->AddLooseGameplayTag(DeadTag);
+	}
+	
+	OnCharacterDied.Broadcast(this);
 }
 
 void ABosCharacter::FinishDying()
@@ -99,13 +123,15 @@ void ABosCharacter::FinishDying()
 
 float ABosCharacter::GetHealth() const
 {
+	if (BosAttributeSet.IsValid())
+	return BosAttributeSet->GetHealth();
 	return 0.0f;
 }
 
 float ABosCharacter::GetMaxHealth() const
 {
-	/*if (BosAttributeSet.IsValid())
-	return BosAttributeSet.GetMaxHealth();*/
+	if (BosAttributeSet.IsValid())
+	return BosAttributeSet->GetMaxHealth();
 	return 0.0f;
 }
 

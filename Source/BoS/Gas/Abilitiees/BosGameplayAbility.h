@@ -7,6 +7,13 @@
 #include "UObject/Object.h"
 #include "BosGameplayAbility.generated.h"
 
+UENUM()
+enum class EBosAbilities : uint8
+{
+	None,
+	Confirm,
+	Cancel
+};
 /**
  * 
  */
@@ -17,5 +24,11 @@ class BOS_API UBosGameplayAbility : public UGameplayAbility
 
 public:
 	UBosGameplayAbility();
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
+	EBosAbilities AbilityInputID;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
+	EBosAbilities AbilityID;
+	
 	
 };
