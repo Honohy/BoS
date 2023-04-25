@@ -64,8 +64,6 @@ void ABosCharacter::InitializeAttributes()
 	FGameplayEffectSpecHandle NewHandle = BosAsc->MakeOutgoingSpec(DefaultAttributes, GetCharacterLevel(), EffectContext);
 	if (NewHandle.IsValid())
 		BosAsc->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), BosAsc.Get());
-	
-		
 }
 
 void ABosCharacter::AddStartEffects()
@@ -87,6 +85,8 @@ void ABosCharacter::AddStartEffects()
 
 void ABosCharacter::SetHealth(float Health)
 {
+	if (BosAttributeSet.IsValid())
+		BosAttributeSet->SetHealth(Health);
 }
 
 // Called every frame
@@ -170,10 +170,3 @@ float ABosCharacter::GetMaxHealth() const
 	return BosAttributeSet->GetMaxHealth();
 	return 0.0f;
 }
-
-// Called to bind functionality to input
-void ABosCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-

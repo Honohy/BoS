@@ -39,22 +39,24 @@ public:
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter")
 	virtual int32 GetAbilityLevel(EBosAbilities AbilityID) const;
 	virtual void RemoveCharacterAbilities();
-	
+
+	//Chaaracter
+	//Character's level
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter")
 	virtual void FinishDying();
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes")
 	int32 GetCharacterLevel();
+	
+	// Character's health
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes")
 	float GetHealth() const;
+	
+	// Character's max health
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes")
 	float GetMaxHealth() const;
 	
 	virtual void Die();
-	
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	
+		
 protected:
 		
 	// Called when the game starts or when spawned
@@ -70,7 +72,6 @@ protected:
 
 	TWeakObjectPtr<UBosAsc> BosAsc;
 	TWeakObjectPtr<UBosAttributeSet> BosAttributeSet;
-
 	FGameplayTag DeadTag;
 	FGameplayTag EffectRemoveOnDeathTag;
 

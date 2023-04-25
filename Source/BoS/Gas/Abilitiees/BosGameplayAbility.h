@@ -26,9 +26,13 @@ public:
 	UBosGameplayAbility();
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
-	EBosAbilities AbilityInputID;
+	EBosAbilities AbilityInputID = EBosAbilities::None;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
-	EBosAbilities AbilityID;
+	EBosAbilities AbilityID = EBosAbilities::None;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
+	bool AbilityActivated;
 	
+	virtual void OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
 	
 };
