@@ -2,3 +2,7 @@
 
 
 #include "BosGameplayAbility.h"
+
+UBosGameplayAbility::UBosGameplayAbility()
+{
+}

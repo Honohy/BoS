@@ -31,8 +31,8 @@ public:
 	FGameplayAttributeData Health;
 	UFUNCTION()
 	virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
-	
 	ATTRIBUTE_ACCESSORS(UBosAttributeSet,Health);
+	
 	UPROPERTY(BlueprintReadOnly, Category="MaxHealth",ReplicatedUsing= OnRep_MaxHealth)
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UBosAttributeSet,MaxHealth);

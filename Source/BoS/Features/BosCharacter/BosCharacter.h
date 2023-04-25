@@ -23,7 +23,9 @@ class BOS_API ABosCharacter : public ACharacter, public IAbilitySystemInterface
 
 public:
 	// Sets default values for this character's properties
-	ABosCharacter(const FObjectInitializer& ObjectInitializer);
+	ABosCharacter(const class FObjectInitializer& ObjectInitializer);
+	
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
@@ -32,23 +34,24 @@ public:
 	FCharacterDead OnCharacterDied;
 
 	// methods
-	UPROPERTY(BlueprintCallable, Category="BoS|Charcter")
+	UFUNCTION(BlueprintCallable, Category="BoS|Charcter")
 	virtual bool IsAlive() const;
-	UPROPERTY(BlueprintCallable, Category="BoS|Charcter")
-	virtual int32 GetAbilityLevel(EBosAbilities AbilityId) const;
+	UFUNCTION(BlueprintCallable, Category="BoS|Charcter")
+	virtual int32 GetAbilityLevel(EBosAbilities AbilityID) const;
 	virtual void RemoveCharacterAbilities();
-	virtual void Die();
+	
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter")
 	virtual void FinishDying();
-	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes");
+	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes")
 	float GetHealth() const;
-	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes");
+	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes")
 	float GetMaxHealth() const;
+	
+	virtual void Die();
 	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 protected:
 		
@@ -58,9 +61,9 @@ protected:
 	// Ability system
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Bos|Abilities")
 	TArray<TSubclassOf<UBosGameplayAbility>> Abilities;
-	UPROPERTY(BlueprintReadWrit, EditAnywhere, Category="Bos|Abilities")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Bos|Abilities")
 	TSubclassOf<UGameplayEffect> DefaultAttributes;
-	UPROPERTY(BlueprintReadWrit, EditAnywhere, Category="Bos|Abilities")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Bos|Abilities")
 	TSubclassOf<UGameplayEffect> StartEffects;
 
 	TWeakObjectPtr<UBosAsc> BosAsc;
@@ -72,5 +75,6 @@ protected:
 	virtual void AddCharacterAbilities();
 	virtual void InitializeAttributes();
 	virtual void AddStartEffects();
-	virtual void SetHealh(float Health);
+	virtual void SetHealth(float Health);
+	
 };

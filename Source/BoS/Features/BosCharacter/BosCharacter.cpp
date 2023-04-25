@@ -2,10 +2,10 @@
 
 
 #include "BosCharacter.h"
-#include "AbilitySystemComponent.h"
-#include "Components/CapsuleComponent.h"
+#include "Bos/Gas/Attributes/BosAttributeSet.h"
 #include "BoS/Gas/BosAsc.h"
 #include "BoS/Gas/Abilitiees/BosGameplayAbility.h"
+#include "Components/CapsuleComponent.h"
 
 
 // Sets default values
@@ -23,7 +23,8 @@ ABosCharacter::ABosCharacter(const FObjectInitializer& ObjectInitializer)
 
 UAbilitySystemComponent* ABosCharacter::GetAbilitySystemComponent() const
 {
-	return BosAsc.Get();
+	//return BosAsc.Get();
+	return nullptr;
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +32,22 @@ void ABosCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ABosCharacter::AddCharacterAbilities()
+{
+}
+
+void ABosCharacter::InitializeAttributes()
+{
+}
+
+void ABosCharacter::AddStartEffects()
+{
+}
+
+void ABosCharacter::SetHealth(float Health)
+{
 }
 
 // Called every frame
@@ -41,7 +58,7 @@ void ABosCharacter::Tick(float DeltaTime)
 
 bool ABosCharacter::IsAlive() const
 {
-	return GetHealth() > 0.0f;
+	return true;
 }
 
 int32 ABosCharacter::GetAbilityLevel(EBosAbilities AbilityId) const
@@ -69,6 +86,27 @@ void ABosCharacter::RemoveCharacterAbilities()
 	}
 
 	BosAsc->GasAbilityGiven = false;
+}
+
+void ABosCharacter::Die()
+{
+}
+
+void ABosCharacter::FinishDying()
+{
+	Destroy();
+}
+
+float ABosCharacter::GetHealth() const
+{
+	return 0.0f;
+}
+
+float ABosCharacter::GetMaxHealth() const
+{
+	/*if (BosAttributeSet.IsValid())
+	return BosAttributeSet.GetMaxHealth();*/
+	return 0.0f;
 }
 
 // Called to bind functionality to input
