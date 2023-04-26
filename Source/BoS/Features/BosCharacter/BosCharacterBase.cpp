@@ -34,7 +34,6 @@ UAbilitySystemComponent* ABosCharacterBase::GetAbilitySystemComponent() const
 void ABosCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void ABosCharacterBase::AddCharacterAbilities()

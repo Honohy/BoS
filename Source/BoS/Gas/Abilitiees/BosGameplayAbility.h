@@ -5,15 +5,10 @@
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
 #include "UObject/Object.h"
+#include "BoS/Common/BosEnum.h"
 #include "BosGameplayAbility.generated.h"
 
-UENUM()
-enum class EBosAbilities : uint8
-{
-	None,
-	Confirm,
-	Cancel
-};
+
 /**
  * 
  */

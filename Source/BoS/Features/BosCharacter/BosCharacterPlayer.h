@@ -27,5 +27,41 @@ public:
 	USpringArmComponent* GetCameraBoom();
 
 	UCameraComponent* GetCamera();
+
+	UFUNCTION(BlueprintCallable)
+	float GetStartingCameraBoomArmLength();
+
+	UFUNCTION(BlueprintCallable)
+	FVector GetStartingCameraBoomLocation();
 	
+protected:
+
+	UPROPERTY(BlueprintReadWrite,EditAnywhere, Category="Camera")
+	float BaseTurnRate = 45.0f;
+	
+	UPROPERTY(BlueprintReadWrite,EditAnywhere, Category="Camera")
+	float BaseLookUpRate = 45.0f;
+	
+	UPROPERTY(BlueprintReadOnly,Category="Bos|Camera")
+	float StartingCameraBoomArmLength;
+
+	UPROPERTY(BlueprintReadOnly,Category="Bos|Camera")
+	FVector StartingCameraBoomLocation;
+	
+	UPROPERTY(BlueprintReadOnly,Category="Bos|Camera")
+	USpringArmComponent* CameraBoom;
+	
+	UPROPERTY(BlueprintReadOnly, Category="Bos|Camera")
+	UCameraComponent* FollowCamera;
+
+	bool BosAsInputBound = false;
+
+	virtual void BeginPlay() override;
+	void BindBosInput();	
+	void LookUp(float Value);
+	void LookUpRate(float Value);
+	void Turn(float Value);
+	void TurnRate(float Value);
+	void MoveForward(float Value);
+	void MoveRight(float Value);
 };

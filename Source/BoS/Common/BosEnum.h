@@ -3,7 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+UENUM()
+enum class EBosAbilities : uint8
+{
+	None,
+	Confirm,
+	Cancel
+};
 /**
  * 
  */
