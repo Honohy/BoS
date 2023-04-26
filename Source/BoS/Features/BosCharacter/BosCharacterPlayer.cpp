@@ -56,7 +56,9 @@ void ABosCharacterPlayer::PossessedBy(AController* NewController)
 		SetHealth(GetMaxHealth());
 		AddStartEffects();
 		AddCharacterAbilities();
+		InitializeAttributes();
 	}
+	
 }
 
 USpringArmComponent* ABosCharacterPlayer::GetCameraBoom()
