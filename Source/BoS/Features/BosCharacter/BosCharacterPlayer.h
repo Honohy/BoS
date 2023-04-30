@@ -34,6 +34,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FVector GetStartingCameraBoomLocation();
 	
+	UFUNCTION(Server, Unreliable)
+	void SimpleStrike();
+	
+	
 protected:
 
 	UPROPERTY(BlueprintReadWrite,EditAnywhere, Category="Camera")

@@ -37,6 +37,8 @@ void ABosCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ABosCharacterPlayer::LookUpRate);
 	PlayerInputComponent->BindAxis("Turn", this, &ABosCharacterPlayer::Turn);
 	PlayerInputComponent->BindAxis("TurnRate", this, &ABosCharacterPlayer::TurnRate);
+	
+	PlayerInputComponent->BindAction("LM Btn WeaponAttack",IE_Pressed, this, &ABosCharacterPlayer::SimpleStrike);
 
 	BindBosInput();
 }
@@ -79,6 +81,11 @@ float ABosCharacterPlayer::GetStartingCameraBoomArmLength()
 FVector ABosCharacterPlayer::GetStartingCameraBoomLocation()
 {
 	return FVector::ZeroVector;
+}
+
+void ABosCharacterPlayer::SimpleStrike_Implementation()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("SimpleStrike"));
 }
 
 void ABosCharacterPlayer::LookUp(float Value)

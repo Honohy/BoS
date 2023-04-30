@@ -4,3 +4,4 @@
 
 #include "CoreMinimal.h"
 
+const FName DebugCategoryBos = FName("BosLog");
