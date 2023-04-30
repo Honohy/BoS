@@ -9,9 +9,11 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "BoS/Common/BosEnum.h"
+#include "Net/UnrealNetwork.h"
 
 ABosCharacterPlayer::ABosCharacterPlayer(const  FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
+	bReplicates = true;
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(FName("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->bUsePawnControlRotation = true;
@@ -25,6 +27,12 @@ ABosCharacterPlayer::ABosCharacterPlayer(const  FObjectInitializer& ObjectInitia
 	GetMesh()->SetCollisionProfileName(FName("NoCollision"));
 
 	DeadTag = FGameplayTag::RequestGameplayTag("State.Dead");
+}
+
+void ABosCharacterPlayer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ABosCharacterPlayer, HasBLock);
 }
 
 void ABosCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -83,6 +91,11 @@ FVector ABosCharacterPlayer::GetStartingCameraBoomLocation()
 	return FVector::ZeroVector;
 }
 
+void ABosCharacterPlayer::SetHasBlock(bool InHasBlock)
+{
+	HasBLock = InHasBlock;
+}
+
 void ABosCharacterPlayer::SimpleStrike_Implementation()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("SimpleStrike"));
@@ -122,6 +135,11 @@ void ABosCharacterPlayer::MoveRight(float Value)
 {
 	if (!IsAlive()) return;
 	AddMovementInput(GetActorRightVector(),Value);
+}
+
+void ABosCharacterPlayer::OnRep_HasBlock(bool OldHasBlock)
+{
+	HasBockChanged.Broadcast(OldHasBlock);
 }
 
 void ABosCharacterPlayer::BeginPlay()

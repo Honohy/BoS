@@ -9,9 +9,9 @@
 
 class UCameraComponent;
 class USpringArmComponent;
-/**
- * 
- */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHasBlock,bool, HasBlock);
+
 UCLASS()
 class BOS_API ABosCharacterPlayer : public ABosCharacterBase
 {
@@ -20,6 +20,8 @@ class BOS_API ABosCharacterPlayer : public ABosCharacterBase
 public:
 	ABosCharacterPlayer(const  FObjectInitializer& ObjectInitializer);
 	
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	virtual void PossessedBy(AController* NewController) override;
@@ -36,7 +38,21 @@ public:
 	
 	UFUNCTION(Server, Unreliable)
 	void SimpleStrike();
-	
+
+	// Block
+	// Has block state
+	UPROPERTY(ReplicatedUsing="OnRep_HasBlock")
+	bool HasBLock;
+	// Has block set state function
+	UFUNCTION(BlueprintCallable, Category="Bos|Battle")
+	void SetHasBlock(bool InHasBlock);
+	// Has block replication
+	UFUNCTION()
+	void OnRep_HasBlock(bool OldHasBlock);
+	// Has block delegate
+	UPROPERTY(BlueprintAssignable)
+	FOnHasBlock HasBockChanged;
+	// Block end
 	
 protected:
 
