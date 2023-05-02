@@ -7,11 +7,15 @@
 #include "BoS/Gas/Abilitiees/BosGameplayAbility.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Movement/BosCharacterMovementComponent.h"
 
 
 // Sets default values
 ABosCharacterBase::ABosCharacterBase(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass
+		<UBosCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
+	BosMovementComponent = StaticCast<UBosCharacterMovementComponent*>(GetMovementComponent());
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 

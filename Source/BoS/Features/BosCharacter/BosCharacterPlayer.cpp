@@ -9,11 +9,15 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "BoS/Common/BosEnum.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 
 ABosCharacterPlayer::ABosCharacterPlayer(const  FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	bReplicates = true;
+	NetUpdateFrequency = 10.0f;
+	MinNetUpdateFrequency = 1.0f;
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(FName("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->bUsePawnControlRotation = true;
@@ -32,7 +36,7 @@ ABosCharacterPlayer::ABosCharacterPlayer(const  FObjectInitializer& ObjectInitia
 void ABosCharacterPlayer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(ABosCharacterPlayer, HasBLock);
+	DOREPLIFETIME(ABosCharacterPlayer, HasSprint);
 }
 
 void ABosCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -91,9 +95,14 @@ FVector ABosCharacterPlayer::GetStartingCameraBoomLocation()
 	return FVector::ZeroVector;
 }
 
-void ABosCharacterPlayer::SetHasBlock(bool InHasBlock)
+void ABosCharacterPlayer::SetHasSprint(bool SprintOn)
 {
-	HasBLock = InHasBlock;
+	HasSprint = SprintOn;
+}
+
+void ABosCharacterPlayer::Server_SetHasSprint_Implementation(bool SprintOn)
+{
+	SetHasSprint(SprintOn);
 }
 
 void ABosCharacterPlayer::SimpleStrike_Implementation()
@@ -137,9 +146,11 @@ void ABosCharacterPlayer::MoveRight(float Value)
 	AddMovementInput(GetActorRightVector(),Value);
 }
 
-void ABosCharacterPlayer::OnRep_HasBlock(bool OldHasBlock)
+void ABosCharacterPlayer::OnRep_HasSprint(bool OldHasSprint)
 {
-	HasBockChanged.Broadcast(OldHasBlock);
+	UCharacterMovementComponent* MC = GetCharacterMovement();
+	MC->MaxWalkSpeed = HasSprint ? InitialMaxSprintSpeed : InitialMaxWalkSpeed;
+	OnHasBockChanged.Broadcast(HasSprint);
 }
 
 void ABosCharacterPlayer::BeginPlay()

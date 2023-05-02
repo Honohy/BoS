@@ -18,7 +18,11 @@ class BOS_API ABosCharacterPlayer : public ABosCharacterBase
 	GENERATED_BODY()
 
 public:
+
 	ABosCharacterPlayer(const  FObjectInitializer& ObjectInitializer);
+	
+	const float InitialMaxWalkSpeed = 250.0f;
+	const float InitialMaxSprintSpeed = 350.0f;
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -39,19 +43,21 @@ public:
 	UFUNCTION(Server, Unreliable)
 	void SimpleStrike();
 
-	// Block
-	// Has block state
-	UPROPERTY(ReplicatedUsing="OnRep_HasBlock")
-	bool HasBLock;
-	// Has block set state function
+	// Sprint
+	// Sprint state
+	UPROPERTY(ReplicatedUsing="OnRep_HasSprint", BlueprintReadWrite,Category="Bos|Battle")
+	bool HasSprint;
+	// SetSprintState
 	UFUNCTION(BlueprintCallable, Category="Bos|Battle")
-	void SetHasBlock(bool InHasBlock);
+	void SetHasSprint(bool SprintOn);
+	UFUNCTION(BlueprintCallable,Server,Unreliable)
+	void Server_SetHasSprint(bool SprintOn);
 	// Has block replication
 	UFUNCTION()
-	void OnRep_HasBlock(bool OldHasBlock);
+	void OnRep_HasSprint(bool OldHasBlock);
 	// Has block delegate
 	UPROPERTY(BlueprintAssignable)
-	FOnHasBlock HasBockChanged;
+	FOnHasBlock OnHasBockChanged;
 	// Block end
 	
 protected:
