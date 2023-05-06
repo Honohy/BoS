@@ -36,6 +36,11 @@ uint8 FSavedMove_Bos::GetCompressedFlags() const
 
 bool FSavedMove_Bos::CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InCharacter, float MaxDelta) const
 {
+	const FSavedMove_Bos* l_NewMove = StaticCast<const FSavedMove_Bos*>(NewMove.Get());
+	if (bSaveIsSprinting != l_NewMove->bSaveIsSprinting)
+	{
+		return false;
+	}
 	return FSavedMove_Character::CanCombineWith(NewMove, InCharacter, MaxDelta);
 }
 
@@ -63,7 +68,8 @@ FNetworkPredictionData_Client_Character_Bos::FNetworkPredictionData_Client_Chara
 
 FSavedMovePtr FNetworkPredictionData_Client_Character_Bos::AllocateNewMove()
 {
-	return FNetworkPredictionData_Client_Character::AllocateNewMove();
+	
+	return FSavedMovePtr(new FSavedMove_Character());
 }
 
 // Sets default values for this component's properties
