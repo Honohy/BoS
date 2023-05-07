@@ -1,12 +1,37 @@
 
 #include "BosMovementComponent.h"
 
+#include "GameplayAbilitySpec.h"
 #include "GameFramework/Character.h"
 
 
 UBosMovementComponent::UBosMovementComponent()
 {
 	IsSprint = false;
+	SprintSpeed = 250.0f;
+	WalkSpeed = 600.0f;
+}
+
+void UBosMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction)
+{
+	MaxWalkSpeed = IsSprint ? SprintSpeed : WalkSpeed;
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
+void UBosMovementComponent::SetSprintEnabled(bool InSprint)
+{
+	IsSprint = InSprint;
+}
+
+void UBosMovementComponent::Multicast_SetSprintEnabled_Implementation(bool InSprint)
+{
+	SetSprintEnabled(InSprint);
+}
+
+void UBosMovementComponent::Server_SetSprintEnabled_Implementation(bool InSprint)
+{
+	Multicast_SetSprintEnabled(InSprint);
 }
 
 void FSavedMove_BosMovement::Clear()

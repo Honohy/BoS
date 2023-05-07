@@ -15,8 +15,21 @@ class BOS_API UBosMovementComponent : public UCharacterMovementComponent
 public:
 	UBosMovementComponent();
 
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere,Category="Bos|Movement")
+	float WalkSpeed;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere,Category="Bos|Movement")
+	float SprintSpeed;
+	UPROPERTY(BlueprintReadOnly)
 	bool IsSprint;
 
+	UFUNCTION(BlueprintCallable, Category="Bos|Movement")
+	void SetSprintEnabled(bool InSprint);
+	UFUNCTION(Server,BlueprintCallable, Unreliable, Category="Bos|Movement")
+	void Server_SetSprintEnabled(bool InSprint);
+	UFUNCTION(NetMulticast, BlueprintCallable, Unreliable, Category="Bos|Movement")
+	void Multicast_SetSprintEnabled(bool InSprint);
 };
 
 class FSavedMove_BosMovement : public FSavedMove_Character
@@ -30,7 +43,7 @@ public:
 	virtual bool CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* Character, float MaxDelta) const override;
 	virtual void SetMoveFor(ACharacter* Character, float InDeltaTime, FVector const& NewAccel, class FNetworkPredictionData_Client_Character & ClientData) override;
 	virtual void PrepMoveFor(ACharacter* Character) override;
-	
+
 	bool SavedRequestSprint : 1;
 };
 

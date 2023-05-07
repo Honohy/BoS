@@ -23,7 +23,7 @@ class BOS_API ABosCharacterBase : public ACharacter, public IAbilitySystemInterf
 
 public:
 
-	ABosCharacterBase(const class FObjectInitializer& ObjectInitializer);
+	ABosCharacterBase(const FObjectInitializer& ObjectInitializer);
 	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	// Called every frame
