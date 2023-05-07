@@ -14,7 +14,6 @@ struct FGameplayTag;
 class UBosAttributeSet;
 class UBosAsc;
 class UBosGameplayAbility;
-class UBosCharacterMovementComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterDead, ABosCharacterBase*, DiedCharacter);
 UCLASS()
@@ -24,7 +23,7 @@ class BOS_API ABosCharacterBase : public ACharacter, public IAbilitySystemInterf
 
 public:
 
-	ABosCharacterBase(const FObjectInitializer& ObjectInitializer);
+	ABosCharacterBase(const class FObjectInitializer& ObjectInitializer);
 	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	// Called every frame
@@ -56,16 +55,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category="BoS|Charcter|Attributes")
 	float GetMaxHealth() const;
 	
-	FORCEINLINE UBosCharacterMovementComponent* GetBosMovement() { return BosMovementComponent; };
 	virtual void Die();
 		
 protected:
 		
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UPROPERTY()
-	UBosCharacterMovementComponent* BosMovementComponent;
+	
 	// Ability system
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Bos|Abilities")
 	TArray<TSubclassOf<UBosGameplayAbility>> Abilities;
