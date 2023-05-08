@@ -19,6 +19,7 @@ class BOS_API UBosGameplayAbility : public UGameplayAbility
 
 public:
 	UBosGameplayAbility();
+	virtual void OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
 	EBosAbilities AbilityInputID = EBosAbilities::None;
@@ -27,7 +28,4 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
 	bool AbilityActivated;
-	
-	virtual void OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
-	
 };

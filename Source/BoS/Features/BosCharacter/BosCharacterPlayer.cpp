@@ -99,6 +99,7 @@ void ABosCharacterPlayer::SetHasBlock(bool InHasBlock)
 void ABosCharacterPlayer::SimpleStrike_Implementation()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("SimpleStrike"));
+	
 }
 
 void ABosCharacterPlayer::LookUp(float Value)

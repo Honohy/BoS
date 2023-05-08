@@ -38,7 +38,7 @@ public:
 	float GetCharacterLevel() const;
 
 protected:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	UBosAsc* BosAsc;
 	UPROPERTY()
 	UBosAttributeSet* BosAttributeSet;

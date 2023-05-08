@@ -25,4 +25,13 @@ public:
 
 	virtual void ReceiveDamage(UBosAsc* SourceAsc, float CleanDamage, float CalculatedDamage);
 	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category= "Ability")
+	int32 AbilityCount;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category= "Ability")
+	TArray<UAnimMontage*> SimpleAttackMontages;
+
+	UFUNCTION(BlueprintCallable, Category= "Ability")
+	void AddMeleeCount();
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category= "Ability")
+	UAnimMontage* GetNexAnimMontage();
 };

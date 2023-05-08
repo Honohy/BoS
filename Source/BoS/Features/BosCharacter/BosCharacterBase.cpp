@@ -40,9 +40,14 @@ void ABosCharacterBase::BeginPlay()
 
 void ABosCharacterBase::AddCharacterAbilities()
 {
-	if (GetRemoteRole() != EGameplayAbilityActivationMode::Authority || !BosAsc.IsValid() ||
-		!BosAsc->GasAbilityGiven)
+	ENetRole l_RemoteRole = GetLocalRole();
+	if (l_RemoteRole != ROLE_Authority)
 		return;
+	if (!BosAsc.IsValid())
+		return;
+	if (BosAsc->GasAbilityGiven)
+		return;
+	
 	for (TSubclassOf<UBosGameplayAbility>& CurrentAbility : Abilities)
 	{
 		BosAsc->GiveAbility(FGameplayAbilitySpec(CurrentAbility, GetAbilityLevel(CurrentAbility.GetDefaultObject()->AbilityInputID),
