@@ -45,9 +45,16 @@ void ABosCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ABosCharacterPlayer::LookUpRate);
 	PlayerInputComponent->BindAxis("Turn", this, &ABosCharacterPlayer::Turn);
 	PlayerInputComponent->BindAxis("TurnRate", this, &ABosCharacterPlayer::TurnRate);
-	
-	PlayerInputComponent->BindAction("LM Btn WeaponAttack",IE_Pressed, this, &ABosCharacterPlayer::SimpleStrike);
 
+	BindBosInput();
+}
+
+void ABosCharacterPlayer::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	ABosPlayerState* LocalPlayerState = GetPlayerState<ABosPlayerState>();
+	BosAsc = Cast<UBosAsc>(LocalPlayerState->GetAbilitySystemComponent());
+	BosAsc->InitAbilityActorInfo(LocalPlayerState,this);
 	BindBosInput();
 }
 
@@ -94,12 +101,6 @@ FVector ABosCharacterPlayer::GetStartingCameraBoomLocation()
 void ABosCharacterPlayer::SetHasBlock(bool InHasBlock)
 {
 	HasBLock = InHasBlock;
-}
-
-void ABosCharacterPlayer::SimpleStrike_Implementation()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("SimpleStrike"));
-	
 }
 
 void ABosCharacterPlayer::LookUp(float Value)

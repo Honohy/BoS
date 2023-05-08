@@ -24,6 +24,7 @@ public:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+	virtual void OnRep_PlayerState() override;
 	virtual void PossessedBy(AController* NewController) override;
 
 	USpringArmComponent* GetCameraBoom();
@@ -35,9 +36,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FVector GetStartingCameraBoomLocation();
-	
-	UFUNCTION(Server, Unreliable)
-	void SimpleStrike();
 
 	// Block
 	// Has block state
