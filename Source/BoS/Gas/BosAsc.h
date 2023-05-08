@@ -16,7 +16,7 @@ UCLASS()
 class BOS_API UBosAsc : public UAbilitySystemComponent	
 {
 	GENERATED_BODY()
-
+	
 public:
 	bool GasAbilityGiven = false;
 	bool StartEffectApplied = false;
@@ -26,12 +26,12 @@ public:
 	virtual void ReceiveDamage(UBosAsc* SourceAsc, float CleanDamage, float CalculatedDamage);
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category= "Ability")
-	int32 AbilityCount;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category= "Ability")
 	TArray<UAnimMontage*> SimpleAttackMontages;
 
-	UFUNCTION(BlueprintCallable, Category= "Ability")
-	void AddMeleeCount();
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category= "Ability")
 	UAnimMontage* GetNexAnimMontage();
+
+private:
+	int32 AbilityCount;
+	void AddMeleeCount();
 };

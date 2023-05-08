@@ -19,5 +19,8 @@ UAnimMontage* UBosAsc::GetNexAnimMontage()
 {
 	if (AbilityCount >= SimpleAttackMontages.Num())
 		return nullptr;
+	
+	AddMeleeCount();
+	
 	return SimpleAttackMontages[AbilityCount];
 }

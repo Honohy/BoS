@@ -154,10 +154,9 @@ void ABosCharacterPlayer::BindBosInput()
 {
 	if (!BosAsInputBound && BosAsc.IsValid() && IsValid(InputComponent))
 	{
-		BosAsc->BindAbilityActivationToInputComponent(InputComponent,FGameplayAbilityInputBinds(
-			FString("ConfirmTarget"),FString("CancelTarget"),
-			FString("EBosAbilities"),(int32)EBosAbilities::Confirm, (int32)EBosAbilities::Cancel));
-		
+		BosAsc->BindAbilityActivationToInputComponent(InputComponent, FGameplayAbilityInputBinds(
+			FString("ConfirmTarget"), FString("CancelTarget"),
+			FString("EBosAbilities")));
 		BosAsInputBound = true;
 	}
 }

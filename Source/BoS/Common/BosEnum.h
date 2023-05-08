@@ -8,7 +8,8 @@ enum class EBosAbilities : uint8
 {
 	None,
 	Confirm,
-	Cancel
+	Cancel,
+	SimpleStrike
 };
 /**
  * 
